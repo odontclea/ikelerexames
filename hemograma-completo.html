@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemograma Completo — Ficha Clínica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF1EC;
+    --paper-2:#E6EAE3;
+    --ink:#17251F;
+    --teal:#2F6F5E;
+    --teal-deep:#1F4B40;
+    --coral:#C0503A;
+    --line: rgba(23,37,31,0.12);
+    --line-soft: rgba(23,37,31,0.07);
+    --muted:#5C6B66;
+    --card:#F7F8F4;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:
+      linear-gradient(var(--line-soft) 1px, transparent 1px) 0 0/28px 28px,
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px) 0 0/28px 28px,
+      var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{ font-family:'Newsreader', serif; font-weight:600; letter-spacing:-0.01em; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex; align-items:center; gap:0.5rem;
+  }
+  .eyebrow::before{ content:""; width:7px;height:7px;border-radius:50%;background:var(--coral);display:inline-block; }
+
+  a{ color:inherit; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 1.75rem; }
+
+  /* ---------- NAV ---------- */
+  header.top{
+    position:sticky; top:0; z-index:20;
+    background:rgba(238,241,236,0.86);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .navbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.95rem 1.75rem; max-width:1080px; margin:0 auto;
+  }
+  .brand{ font-family:'IBM Plex Mono', monospace; font-size:0.85rem; letter-spacing:0.04em; display:flex; align-items:center; gap:0.55rem; }
+  .brand .cross{ width:16px;height:16px; position:relative; flex:none; }
+  .brand .cross::before, .brand .cross::after{ content:""; position:absolute; background:var(--teal); }
+  .brand .cross::before{ top:0;left:6.5px;width:3px;height:16px; }
+  .brand .cross::after{ left:0;top:6.5px;width:16px;height:3px; }
+
+  .back-link{
+    display:inline-flex; align-items:center; gap:0.4rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem;
+    color:var(--muted); text-decoration:none;
+    border-bottom:1px solid transparent; padding-bottom:2px;
+    transition:color .18s, border-color .18s;
+  }
+  .back-link:hover{ color:var(--ink); border-color:var(--coral); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:3.6rem 0 2.6rem; }
+  .hero .grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:2.5rem; align-items:center; }
+  .hero h1{ font-size:clamp(2.2rem,4.6vw,3.2rem); line-height:1.06; margin:0.9rem 0 1.1rem; }
+  .hero h1 em{ font-style:italic; color:var(--teal-deep); }
+  .hero p.lead{ font-size:1.02rem; color:var(--muted); max-width:50ch; margin-bottom:1.6rem; }
+
+  .badge-row{ display:flex; gap:0.6rem; flex-wrap:wrap; }
+  .badge{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    padding:0.4rem 0.75rem; border:1px solid var(--line); border-radius:20px;
+    color:var(--muted); background:var(--card);
+  }
+
+  .sample-card{
+    background:var(--card); border:1px solid var(--line); border-radius:6px;
+    padding:1.4rem 1.5rem; box-shadow:0 18px 40px -24px rgba(23,37,31,0.35);
+  }
+  .sample-card .eyebrow{ margin-bottom:0.9rem; }
+  .sample-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; font-family:'IBM Plex Mono', monospace; }
+  .sample-grid div{ font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+  .sample-grid strong{ display:block; font-size:1.05rem; color:var(--ink); font-family:'IBM Plex Sans',sans-serif; font-weight:600; margin-top:0.15rem; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding:3.2rem 0; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:2rem;
+    margin-bottom:1.8rem; border-bottom:1px solid var(--line); padding-bottom:1rem;
+  }
+  .section-head h2{ font-size:clamp(1.5rem,2.8vw,1.95rem); }
+  .section-head p{ color:var(--muted); max-width:36ch; font-size:0.9rem; }
+
+  .group-block{ margin-bottom:2.6rem; }
+  .group-title{
+    display:flex; align-items:center; gap:0.7rem; margin-bottom:1rem;
+  }
+  .group-title .dot{
+    width:10px;height:10px;border-radius:50%; flex:none;
+  }
+  .group-title h3{ font-size:1.2rem; font-weight:600; }
+  .group-title span.count{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--muted);
+    margin-left:auto;
+  }
+
+  .param-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:1rem;
+  }
+  .param-card{
+    background:var(--card); border:1px solid var(--line); border-radius:6px;
+    padding:1.1rem 1.2rem 1.25rem; display:flex; flex-direction:column;
+    transition:transform .18s, box-shadow .18s;
+  }
+  .param-card:hover{ transform:translateY(-3px); box-shadow:0 16px 28px -22px rgba(23,37,31,0.4); }
+  .param-card .abbr{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--teal-deep); margin-bottom:0.4rem;
+  }
+  .param-card h4{ font-size:1rem; font-weight:600; margin-bottom:0.4rem; font-family:'IBM Plex Sans',sans-serif; }
+  .param-card p{ font-size:0.84rem; color:var(--muted); flex:1; }
+  .param-card .range{
+    margin-top:0.8rem; padding-top:0.65rem; border-top:1px dashed var(--line);
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--coral);
+  }
+
+  /* ---------- MEANING TABLE ---------- */
+  table.meaning-table{
+    width:100%; border-collapse:collapse; font-size:0.88rem;
+    background:var(--card); border:1px solid var(--line); border-radius:6px; overflow:hidden;
+  }
+  table.meaning-table th, table.meaning-table td{ text-align:left; padding:0.8rem 1.05rem; border-bottom:1px solid var(--line); }
+  table.meaning-table th{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--muted); background:var(--paper-2);
+  }
+  table.meaning-table tr:last-child td{ border-bottom:none; }
+  table.meaning-table td:first-child{ font-weight:600; }
+  table.meaning-table td.up{ color:var(--coral); font-family:'IBM Plex Mono', monospace; font-size:0.82rem; }
+  table.meaning-table td.down{ color:var(--teal-deep); font-family:'IBM Plex Mono', monospace; font-size:0.82rem; }
+
+  /* ---------- CLOSING ---------- */
+  .closing{
+    background:var(--teal-deep); color:var(--paper); border-radius:8px;
+    padding:2.4rem 2.2rem; text-align:center; margin:1rem 1.75rem 0;
+  }
+  .closing h2{ color:var(--paper); font-size:clamp(1.4rem,2.8vw,1.85rem); margin-bottom:0.6rem; }
+  .closing p{ color:rgba(238,241,236,0.8); max-width:52ch; margin:0 auto 1.4rem; font-size:0.92rem; }
+  .btn{
+    display:inline-flex; align-items:center; gap:0.5rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.8rem; letter-spacing:0.03em;
+    padding:0.72rem 1.1rem; border-radius:3px; text-decoration:none; cursor:pointer;
+    border:1px solid var(--coral); background:var(--coral); color:var(--paper);
+  }
+  .btn:hover{ opacity:0.9; }
+
+  footer{
+    padding:2.2rem 1.75rem 2.8rem; text-align:center;
+    font-family:'IBM Plex Mono', monospace; font-size:0.74rem; color:var(--muted);
+  }
+
+  @media (max-width:820px){
+    .hero .grid{ grid-template-columns:1fr; }
+  }
+
+  :focus-visible{ outline:2px solid var(--coral); outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="navbar">
+    <div class="brand"><span class="cross"></span> FICHA CLÍNICA</div>
+    <a href="exames-saude.html" class="back-link">← Voltar para todos os exames</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <span class="eyebrow">Sangue · exame de rotina</span>
+        <h1>Hemograma <em>completo,</em><br>parâmetro por parâmetro.</h1>
+        <p class="lead">O hemograma é uma contagem detalhada das células do sangue, dividida em três séries: vermelha, branca e plaquetária. Cada parâmetro conta uma parte diferente da história.</p>
+        <div class="badge-row">
+          <span class="badge">17 parâmetros</span>
+          <span class="badge">Jejum: não obrigatório</span>
+          <span class="badge">Resultado: 1–2 dias</span>
+        </div>
+      </div>
+
+      <div class="sample-card">
+        <span class="eyebrow">Resumo da coleta</span>
+        <div class="sample-grid">
+          <div>Amostra<strong>Sangue venoso</strong></div>
+          <div>Tubo<strong>EDTA (tampa roxa)</strong></div>
+          <div>Duração<strong>~2 minutos</strong></div>
+          <div>Frequência<strong>Anual</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="serie-vermelha">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Componentes</span>
+          <h2>Todos os exames que compõem o hemograma</h2>
+        </div>
+        <p>Organizados pelas três séries avaliadas em uma única coleta de sangue.</p>
+      </div>
+
+      <div class="group-block">
+        <div class="group-title">
+          <span class="dot" style="background:var(--coral);"></span>
+          <h3>Série vermelha (eritrograma)</h3>
+          <span class="count">6 parâmetros</span>
+        </div>
+        <div class="param-grid">
+          <div class="param-card">
+            <div class="abbr">RBC</div>
+            <h4>Hemácias (eritrócitos)</h4>
+            <p>Número de glóbulos vermelhos por volume de sangue. Transportam oxigênio dos pulmões para os tecidos.</p>
+            <div class="range">4,5–6,1 milhões/mm³ (H) · 4,0–5,4 (M)</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">HGB</div>
+            <h4>Hemoglobina</h4>
+            <p>Proteína das hemácias responsável por carregar oxigênio. Principal marcador usado para identificar anemia.</p>
+            <div class="range">13,5–17,5 g/dL (H) · 12,0–15,5 (M)</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">HCT</div>
+            <h4>Hematócrito</h4>
+            <p>Percentual do volume sanguíneo ocupado por hemácias. Acompanha a hemoglobina na avaliação de anemia.</p>
+            <div class="range">40–52% (H) · 36–47% (M)</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">VCM</div>
+            <h4>Volume corpuscular médio</h4>
+            <p>Tamanho médio das hemácias. Ajuda a classificar o tipo de anemia (microcítica, normocítica ou macrocítica).</p>
+            <div class="range">80–100 fL</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">HCM</div>
+            <h4>Hemoglobina corpuscular média</h4>
+            <p>Quantidade média de hemoglobina dentro de cada hemácia individual.</p>
+            <div class="range">27–33 pg</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">RDW</div>
+            <h4>Amplitude de distribuição dos glóbulos vermelhos</h4>
+            <p>Mede a variação de tamanho entre as hemácias. Útil para identificar deficiências nutricionais precoces.</p>
+            <div class="range">11,5–14,5%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="group-block">
+        <div class="group-title">
+          <span class="dot" style="background:var(--teal);"></span>
+          <h3>Série branca (leucograma)</h3>
+          <span class="count">7 parâmetros</span>
+        </div>
+        <div class="param-grid">
+          <div class="param-card">
+            <div class="abbr">WBC</div>
+            <h4>Leucócitos totais</h4>
+            <p>Contagem geral de glóbulos brancos, responsáveis pela defesa do organismo contra infecções.</p>
+            <div class="range">4.000–11.000/mm³</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">NEU</div>
+            <h4>Neutrófilos</h4>
+            <p>Maior parte dos leucócitos. Primeira linha de defesa contra infecções bacterianas.</p>
+            <div class="range">40–70% dos leucócitos</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">LINF</div>
+            <h4>Linfócitos</h4>
+            <p>Atuam na defesa contra vírus e na memória imunológica de longo prazo.</p>
+            <div class="range">20–40% dos leucócitos</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">MONO</div>
+            <h4>Monócitos</h4>
+            <p>Combatem infecções e ajudam a limpar células mortas e restos celulares do organismo.</p>
+            <div class="range">2–8% dos leucócitos</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">EOS</div>
+            <h4>Eosinófilos</h4>
+            <p>Envolvidos em reações alérgicas e no combate a parasitas.</p>
+            <div class="range">1–4% dos leucócitos</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">BASO</div>
+            <h4>Basófilos</h4>
+            <p>Os menos numerosos, participam de respostas inflamatórias e alérgicas.</p>
+            <div class="range">0–1% dos leucócitos</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">BAST</div>
+            <h4>Bastonetes</h4>
+            <p>Neutrófilos ainda jovens. Um número elevado costuma indicar infecção em curso.</p>
+            <div class="range">0–5% dos leucócitos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="group-block">
+        <div class="group-title">
+          <span class="dot" style="background:#8A6D3B;"></span>
+          <h3>Série plaquetária</h3>
+          <span class="count">4 parâmetros</span>
+        </div>
+        <div class="param-grid">
+          <div class="param-card">
+            <div class="abbr">PLT</div>
+            <h4>Plaquetas</h4>
+            <p>Células responsáveis pela coagulação sanguínea, essenciais para estancar sangramentos.</p>
+            <div class="range">150.000–450.000/mm³</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">VPM</div>
+            <h4>Volume plaquetário médio</h4>
+            <p>Tamanho médio das plaquetas. Plaquetas maiores costumam indicar produção acelerada pela medula óssea.</p>
+            <div class="range">7,5–11,5 fL</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">PDW</div>
+            <h4>Amplitude de distribuição de plaquetas</h4>
+            <p>Mede a variação de tamanho entre as plaquetas, complementando a leitura do VPM.</p>
+            <div class="range">10–17%</div>
+          </div>
+          <div class="param-card">
+            <div class="abbr">PCT</div>
+            <h4>Plaquetócrito</h4>
+            <p>Percentual do volume sanguíneo ocupado por plaquetas, equivalente ao hematócrito para essa série.</p>
+            <div class="range">0,15–0,4%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leitura">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Como interpretar</span>
+          <h2>O que valores fora da faixa podem sugerir</h2>
+        </div>
+        <p>Leitura geral e educativa — a interpretação real depende do contexto clínico completo.</p>
+      </div>
+
+      <table class="meaning-table">
+        <thead>
+          <tr>
+            <th>Parâmetro</th>
+            <th>Acima da faixa</th>
+            <th>Abaixo da faixa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hemoglobina / Hematócrito</td>
+            <td class="up">↑ Desidratação, policitemia</td>
+            <td class="down">↓ Possível anemia</td>
+          </tr>
+          <tr>
+            <td>VCM</td>
+            <td class="up">↑ Anemia macrocítica (ex: def. de B12)</td>
+            <td class="down">↓ Anemia microcítica (ex: def. de ferro)</td>
+          </tr>
+          <tr>
+            <td>Leucócitos totais</td>
+            <td class="up">↑ Infecção, inflamação, estresse</td>
+            <td class="down">↓ Infecção viral, supressão de medula</td>
+          </tr>
+          <tr>
+            <td>Neutrófilos</td>
+            <td class="up">↑ Infecção bacteriana aguda</td>
+            <td class="down">↓ Risco aumentado de infecção</td>
+          </tr>
+          <tr>
+            <td>Eosinófilos</td>
+            <td class="up">↑ Alergias, parasitoses</td>
+            <td class="down">↓ Geralmente sem relevância clínica</td>
+          </tr>
+          <tr>
+            <td>Plaquetas</td>
+            <td class="up">↑ Inflamação, resposta a sangramento</td>
+            <td class="down">↓ Risco de sangramento aumentado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="closing wrap" style="max-width:1080px;">
+    <span class="eyebrow" style="color:#CDE2D9; justify-content:center;">Importante</span>
+    <h2>Resultado alterado não é diagnóstico</h2>
+    <p>As faixas de referência variam entre laboratórios e podem mudar conforme idade, sexo e condição de saúde. Leve sempre o resultado a um médico para interpretação.</p>
+    <a href="exames-saude.html" class="btn">← Voltar para todos os exames</a>
+  </div>
+
+  <footer>
+    GUIA EDUCATIVO · NÃO SUBSTITUI CONSULTA MÉDICA · CONTEÚDO ILUSTRATIVO
+  </footer>
+</main>
+
+</body>
+</html>
